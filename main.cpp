@@ -71,23 +71,25 @@ namespace Examples
     // slider->Bind(wxEVT_SLIDER,&myFrame::SliderChange,this);
     // wxTextCtrl *text = new wxTextCtrl(left,wxID_ANY,"",wxPoint(300,375),wxSize(200,-1));
     // text->Bind(wxEVT_TEXT,&myFrame::TextChange,this);
+    wxBoxSizer *split = new wxBoxSizer(wxHORIZONTAL);
 
-    wxBoxSizer *topsizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer *rightsizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer *leftsizer = new wxBoxSizer(wxVERTICAL);
     // create text ctrl with minimal size 100x60 that is horizontally and
     // vertically stretchable with a border width of 10
-    topsizer->Add(
+    leftsizer->Add(
         new wxStaticText(this, wxID_ANY, "Zasifrovat"),
         wxSizerFlags(0.5).Border(wxALL, 10));
 
         wxTextCtrl *input = new wxTextCtrl(this, -1, "My text.", wxDefaultPosition, wxSize(100, 60), wxTE_MULTILINE);
         input->Bind(wxEVT_TEXT,&myFrame::TextChange,this);
-    topsizer->Add(
+    leftsizer->Add(
         input,
         wxSizerFlags(1).Top().Expand().Border(wxALL, 10));
-    topsizer->Add(
+    leftsizer->Add(
         new wxStaticText(this, wxID_ANY, "Zasifrovane"),
         wxSizerFlags(0.5).Border(wxALL, 10));
-    topsizer->Add(
+    leftsizer->Add(
         new wxTextCtrl(this, -1, "My text.", wxDefaultPosition, wxSize(100, 60), wxTE_MULTILINE),
         wxSizerFlags(1).Top().Expand().Border(wxALL, 10));
     wxBoxSizer *button_sizer = new wxBoxSizer(wxHORIZONTAL);
@@ -102,17 +104,25 @@ namespace Examples
         new wxButton(this, wxID_CANCEL, "Cancel"),
         wxSizerFlags(0).Top().Border(wxALL, 10));
     // create a sizer with no border and centered horizontally
-    topsizer->Add(
+    leftsizer->Add(
         button_sizer,
         wxSizerFlags(0).Center());
-    SetSizerAndFit(topsizer); // use the sizer for layout and set size and hints
+
+
+          rightsizer->Add(
+        new wxStaticText(this, wxID_ANY, "Zasifrovat"),
+        wxSizerFlags(0.5).Border(wxALL, 10));
+
+    split->Add(leftsizer,wxSizerFlags(1));
+    split->Add(rightsizer,wxSizerFlags(3));
+    SetSizerAndFit(split); // use the sizer for layout and set size and hints
     // wxButton *button = new wxButton(left,wxID_ANY,"clickme",wxPoint(300,275),wxSize(50,-1));
     // button->Bind(wxEVT_BUTTON,&myFrame::OnbuttonClicked,this);
     // wxSlider *slider = new wxSlider(left,wxID_ANY,0,0,100,wxPoint(300,275),wxSize(200,-1));
     // slider->Bind(wxEVT_SLIDER,&myFrame::SliderChange,this);
     // wxTextCtrl *text = new wxTextCtrl(left,wxID_ANY,"",wxPoint(300,375),wxSize(200,-1));
     // text->Bind(wxEVT_TEXT,&myFrame::TextChange,this);
-    // SetSizerAndFit(topsizer);
+    // SetSizerAndFit(leftsizer);
 
     // button->Unbind(wxEVT_BUTTON,&myFrame::OnbuttonClicked,this);
 
