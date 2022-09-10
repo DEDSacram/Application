@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/sacram/Application/build",
+  "command": "/usr/bin/clang++ -DWXUSINGDLL -D__WXGTK3__ -D__WXGTK__ -isystem /usr/lib/wx/include/gtk3-unicode-3.2 -isystem /usr/include/wx-3.2  -pthread -g -std=gnu++17 -o CMakeFiles/Application.dir/main.cpp.o -c /home/sacram/Application/main.cpp",
+  "file": "/home/sacram/Application/main.cpp"
+}
+]
