@@ -1,6 +1,9 @@
 #include <wx/wx.h>
 #include <wx/splitter.h>
 
+#include <wx/grid.h>
+
+
 namespace Examples
 {
   // enum IDs{
@@ -81,7 +84,7 @@ namespace Examples
         new wxStaticText(this, wxID_ANY, "Zasifrovat"),
         wxSizerFlags(0.5).Border(wxALL, 10));
 
-        wxTextCtrl *input = new wxTextCtrl(this, -1, "My text.", wxDefaultPosition, wxSize(100, 60), wxTE_MULTILINE);
+        wxTextCtrl *input = new wxTextCtrl(this, -1, "", wxDefaultPosition, wxSize(100, 60), wxTE_MULTILINE);
         input->Bind(wxEVT_TEXT,&myFrame::TextChange,this);
     leftsizer->Add(
         input,
@@ -90,7 +93,7 @@ namespace Examples
         new wxStaticText(this, wxID_ANY, "Zasifrovane"),
         wxSizerFlags(0.5).Border(wxALL, 10));
     leftsizer->Add(
-        new wxTextCtrl(this, -1, "My text.", wxDefaultPosition, wxSize(100, 60), wxTE_MULTILINE),
+        new wxTextCtrl(this, -1, "", wxDefaultPosition, wxSize(100, 60), wxTE_MULTILINE),
         wxSizerFlags(1).Top().Expand().Border(wxALL, 10));
     wxBoxSizer *button_sizer = new wxBoxSizer(wxHORIZONTAL);
     // create two buttons that are horizontally unstretchable,
@@ -109,12 +112,21 @@ namespace Examples
         wxSizerFlags(0).Center());
 
 
+    wxGrid *grid = new wxGrid(this,wxID_ANY);
+    grid->CreateGrid(21,12);
+
+    for(int i = 0; i < 21*12;i++){
+      grid->SetCellValue(1,0, wxString::Format("%.2d", i));
+    }
+    grid->InvalidateBestSize();
+    SetClientSize(grid->GetBestSize());
+
           rightsizer->Add(
-        new wxStaticText(this, wxID_ANY, "Zasifrovat"),
+        grid,
         wxSizerFlags(0.5).Border(wxALL, 10));
 
-    split->Add(leftsizer,wxSizerFlags(1));
-    split->Add(rightsizer,wxSizerFlags(3));
+    split->Add(leftsizer,wxSizerFlags(1).Expand());
+    split->Add(rightsizer,wxSizerFlags(2));
     SetSizerAndFit(split); // use the sizer for layout and set size and hints
     // wxButton *button = new wxButton(left,wxID_ANY,"clickme",wxPoint(300,275),wxSize(50,-1));
     // button->Bind(wxEVT_BUTTON,&myFrame::OnbuttonClicked,this);

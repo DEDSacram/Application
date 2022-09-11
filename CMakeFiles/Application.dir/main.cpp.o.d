@@ -348,4 +348,7 @@ CMakeFiles/Application.dir/main.cpp.o: /home/sacram/Application/main.cpp \
  /usr/include/wx-3.2/wx/gtk/filectrl.h /usr/include/wx-3.2/wx/filectrl.h \
  /usr/include/wx-3.2/wx/mdi.h /usr/include/wx-3.2/wx/gtk/mdi.h \
  /usr/include/wx-3.2/wx/splitter.h \
- /usr/include/wx-3.2/wx/generic/splitter.h
+ /usr/include/wx-3.2/wx/generic/splitter.h /usr/include/wx-3.2/wx/grid.h \
+ /usr/include/wx-3.2/wx/generic/grid.h \
+ /usr/include/wx-3.2/wx/generic/grideditors.h \
+ /usr/include/wx-3.2/wx/generic/gridctrl.h
