@@ -13,6 +13,106 @@ namespace Examples
   // };
   // EVT_BUTTON(Button_ID, myFrame::O)
 
+//   class StretchGrid : public wxGrid
+// {
+// public:
+//     StretchGrid (wxWindow *parent, wxWindowID id, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize,
+// 	       long style = wxWANTS_CHARS, const wxString& name = wxGridNameStr);
+//     ~StretchGrid ();
+    
+// protected:
+//     void OnGridWindowSize (wxSizeEvent& event);
+//     void OnColHeaderSize (wxGridSizeEvent& event);
+//     void AutoSizeLastCol ();
+// };
+// StretchGrid::StretchGrid (wxWindow *parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name) :
+// 			wxGrid (parent, id, pos, size, style, name)
+// {
+//     GetGridWindow()->Bind (wxEVT_SIZE, &StretchGrid::OnGridWindowSize, this);
+//     Bind (wxEVT_GRID_COL_SIZE, &StretchGrid::OnColHeaderSize, this);
+// }
+
+// StretchGrid::~StretchGrid()
+// {
+//     GetGridWindow()->Unbind (wxEVT_SIZE, &StretchGrid::OnGridWindowSize, this);
+//     Unbind (wxEVT_GRID_COL_SIZE, &StretchGrid::OnColHeaderSize, this);
+// }
+
+// void StretchGrid::OnGridWindowSize (wxSizeEvent& event)
+// {
+//     if (GetNumberCols() > 0)
+//         AutoSizeLastCol ();
+// }
+
+// void StretchGrid::OnColHeaderSize (wxGridSizeEvent& event)
+// {
+//     if (GetNumberCols() > 0)
+//         AutoSizeLastCol ();
+// }
+
+// void StretchGrid::AutoSizeLastCol ()
+// {
+//     int colWidths = 0;
+    
+//     for (int i = 0; i < GetNumberCols() - 1; i++)
+//         colWidths += GetColWidth (i);
+    
+//     int finalColWidth = GetGridWindow()->GetSize().x - colWidths;
+         
+    
+//     if (finalColWidth > 80)
+//         SetColSize (GetNumberCols() - 1, finalColWidth);
+//     else
+//         SetColSize (GetNumberCols() - 1, 80);
+// }
+
+class MovableButton : public wxButton
+{
+	bool dragging;
+	int x,y;
+	wxPanel* parent;
+public:
+	
+	MovableButton(wxPanel* parent,wxSize k) : wxButton(parent, wxID_ANY, wxT("Drag me around"))
+	{
+		MovableButton::parent = parent;
+    MovableButton::SetSize(k);
+		dragging = false;
+	}
+		
+	void onMouseDown(wxMouseEvent& evt)
+	{
+		CaptureMouse();
+		x = evt.GetX();
+		y = evt.GetY();
+		dragging=true;
+	}
+	void onMouseUp(wxMouseEvent& evt)
+	{
+		ReleaseMouse();
+		dragging=false;
+	}
+	void onMove(wxMouseEvent& evt)
+	{
+		if(dragging)
+		{
+			wxPoint mouseOnScreen = wxGetMousePosition();
+			int newx = mouseOnScreen.x - x;
+			int newy = mouseOnScreen.y - y;
+			this->Move( parent->ScreenToClient( wxPoint(newx, newy) ) );
+		}
+	}
+	
+	DECLARE_EVENT_TABLE()
+};
+
+BEGIN_EVENT_TABLE(MovableButton,wxButton)
+EVT_LEFT_DOWN(MovableButton::onMouseDown)
+EVT_LEFT_UP(MovableButton::onMouseUp)
+EVT_MOTION(MovableButton::onMove)
+END_EVENT_TABLE()
+
+
   class Application : public wxApp
   {
   public:
@@ -65,6 +165,17 @@ namespace Examples
     // wxPanel *left = new wxPanel(splitter);
     // wxPanel *right = new wxPanel(splitter);
 
+
+    // sizer = wx.BoxSizer(wx.VERTICAL)
+    // image_panel = ImagePanel(main_panel)
+    // sizer.Add(image_panel, 1, wx.EXPAND|wx.ALL, 5)
+
+    // # Add your control panel here
+
+    // main_panel.SetSizer(sizer)
+    // self.Centre()
+    // self.Show()
+
     // wxButton *button = new wxButton(left,Button_ID,"clickme",wxPoint(300,275),wxSize(50,50));
     // wxSlider *slider = new wxSlider(left,Slider_ID,0,0,100,wxPoint(300,275),wxSize(200,-1));
     // wxTextCtrl *text = new wxTextCtrl(left,TEXT_ID,"",wxPoint(300,375),wxSize(200,-1));
@@ -83,7 +194,6 @@ namespace Examples
     leftsizer->Add(
         new wxStaticText(this, wxID_ANY, "Zasifrovat"),
         wxSizerFlags(0.5).Border(wxALL, 10));
-
         wxTextCtrl *input = new wxTextCtrl(this, -1, "", wxDefaultPosition, wxSize(100, 60), wxTE_MULTILINE);
         input->Bind(wxEVT_TEXT,&myFrame::TextChange,this);
     leftsizer->Add(
@@ -118,6 +228,7 @@ namespace Examples
     for(int i = 0; i < 21*12;i++){
       grid->SetCellValue(1,0, wxString::Format("%.2d", i));
     }
+
     grid->InvalidateBestSize();
     SetClientSize(grid->GetBestSize());
 
@@ -125,8 +236,23 @@ namespace Examples
         grid,
         wxSizerFlags(0.5).Border(wxALL, 10));
 
+
+    // grid->Move(20,50,wxSIZE_USE_EXISTING);
     split->Add(leftsizer,wxSizerFlags(1).Expand());
+
+    //animation
+    //wxBoxSizer *bottom = new wxBoxSizer(wxHORIZONTAL);
+    wxPanel *dum = new wxPanel(this);
+    MovableButton *x = new MovableButton(dum,DoGetBestClientSize());
+    x->Move(100,10);
+    //dum->SetSizer(bottom);
+    rightsizer->Add(dum,wxSizerFlags(1));
+    //
+
     split->Add(rightsizer,wxSizerFlags(2));
+
+   
+    
     SetSizerAndFit(split); // use the sizer for layout and set size and hints
     // wxButton *button = new wxButton(left,wxID_ANY,"clickme",wxPoint(300,275),wxSize(50,-1));
     // button->Bind(wxEVT_BUTTON,&myFrame::OnbuttonClicked,this);
