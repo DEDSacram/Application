@@ -86,6 +86,7 @@ public:
 		x = evt.GetX();
 		y = evt.GetY();
 		dragging=true;
+    this->SetSize(20,80);
 	}
 	void onMouseUp(wxMouseEvent& evt)
 	{
@@ -99,6 +100,8 @@ public:
 			wxPoint mouseOnScreen = wxGetMousePosition();
 			int newx = mouseOnScreen.x - x;
 			int newy = mouseOnScreen.y - y;
+      wxPoint newpoint = parent->ScreenToClient( wxPoint(newx, newy) );
+      //this->SetSize(20,80);
 			this->Move( parent->ScreenToClient( wxPoint(newx, newy) ) );
 		}
 	}
@@ -124,11 +127,16 @@ END_EVENT_TABLE()
   public:
     myFrame(const wxString &title, const wxPoint &pos, const wxSize &size);
     wxString greeting = "Hi";
+  
+  
+
+
 
   private:
     void OnbuttonClicked(wxCommandEvent &event);
     void SliderChange(wxCommandEvent &event);
     void TextChange(wxCommandEvent &event);
+
     // wxDECLARE_EVENT_TABLE();
   };
 
@@ -137,6 +145,9 @@ END_EVENT_TABLE()
   //   EVT_TEXT(TEXT_ID,myFrame::TextChange)
   //   EVT_SLIDER(Slider_ID,myFrame::SliderChange)
   // wxEND_EVENT_TABLE()
+
+
+
 
   void myFrame::OnbuttonClicked(wxCommandEvent &event)
   {
